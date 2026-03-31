@@ -5,7 +5,6 @@ import {colors,components} from '@/constants/theme'
 import clsx from 'clsx'
 import {Image} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-// import { components } from "@/constants/theme";
 
 const tabBar = components.tabBar;
 
