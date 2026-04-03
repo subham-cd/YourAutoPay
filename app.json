@@ -39,19 +39,19 @@
           }
         }
       ],
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assests/fonts/PlusJakartaSans-Regular.ttf",
-            "./assests/fonts/PlusJakartaSans-Bold.ttf",
-            "./assests/fonts/PlusJakartaSans-Medium.ttf",
-            "./assests/fonts/PlusJakartaSans-SemiBold.ttf",
-            "./assests/fonts/PlusJakartaSans-ExtraBold.ttf",
-            "./assests/fonts/PlusJakartaSans-Light.ttf"
-          ]
-        }
-      ],
+[
+  "expo-font",
+  {
+    "fonts": [
+      "./assets/fonts/PlusJakartaSans-Regular.ttf",
+      "./assets/fonts/PlusJakartaSans-Bold.ttf",
+      "./assets/fonts/PlusJakartaSans-Medium.ttf",
+      "./assets/fonts/PlusJakartaSans-SemiBold.ttf",
+      "./assets/fonts/PlusJakartaSans-ExtraBold.ttf",
+      "./assets/fonts/PlusJakartaSans-Light.ttf"
+    ]
+  }
+],
       "@clerk/expo",
       "expo-secure-store",
       "expo-localization"
