@@ -52,7 +52,7 @@
     ]
   }
 ],
-      "@clerk/expo",
+      "expo-notifications",
       "expo-secure-store",
       "expo-localization"
     ],

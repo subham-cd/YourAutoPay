@@ -26,13 +26,16 @@ declare global {
         billing: string;
         renewalDate?: string;
         color?: string;
+        notificationsEnabled?: boolean;
+        remindBeforeDays?: number;
+        notificationId?: string;
     }
 
     interface SubscriptionCardProps extends Omit<Subscription, "id"> {
         expanded: boolean;
         onPress: () => void;
-        onCancelPress?: () => void;
-        isCancelling?: boolean;
+        onEditPress?: () => void;
+        onDeletePress?: () => void;
     }
 
     interface UpcomingSubscription {
@@ -42,6 +45,7 @@ declare global {
         price: number;
         currency?: string;
         daysLeft: number;
+        timeLeftLabel: string;
     }
 
     interface UpcomingSubscriptionCardProps
@@ -49,6 +53,19 @@ declare global {
 
     interface ListHeadingProps {
         title: string;
+    }
+
+    interface SubscriptionFormValues {
+        name: string;
+        price: string;
+        billing: "Monthly" | "Yearly";
+        category: "Entertainment" | "AI Tools" | "Developer Tools" | "Design" | "Productivity" | "Other";
+        paymentMethodInput: string;
+        renewalDateInput: string;
+        renewalTimeInput: string;
+        renewalPeriodInput: "AM" | "PM";
+        notificationsEnabled: boolean;
+        remindBeforeDays: number;
     }
 }
 
