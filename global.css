@@ -79,6 +79,10 @@
         @apply ml-4 text-2xl font-sans-bold text-primary;
     }
 
+    .home-user-subtitle {
+        @apply ml-4 text-sm font-sans-medium text-muted-foreground;
+    }
+
     .home-add-icon {
         @apply size-12;
     }
@@ -101,6 +105,14 @@
 
     .home-balance-date {
         @apply text-xl font-sans-medium text-white;
+    }
+
+    .home-support-note {
+        @apply mb-5 rounded-2xl border border-accent/20 bg-accent/10 p-4;
+    }
+
+    .home-support-note-text {
+        @apply text-sm font-sans-medium text-primary;
     }
 
     .list-head {
@@ -211,16 +223,28 @@
         @apply flex-1 font-sans-bold text-primary;
     }
 
-    .sub-cancel {
-        @apply mt-2 items-center rounded-full bg-primary py-4;
+    .sub-actions {
+        @apply mt-2 flex-row gap-3;
     }
 
-    .sub-cancel-disabled {
-        @apply bg-primary/35;
+    .sub-action-button {
+        @apply flex-1 items-center rounded-full py-3;
     }
 
-    .sub-cancel-text {
+    .sub-action-edit {
+        @apply bg-primary;
+    }
+
+    .sub-action-delete {
+        @apply border border-destructive/30 bg-destructive/10;
+    }
+
+    .sub-action-text {
         @apply font-sans-bold text-background;
+    }
+
+    .sub-action-text-delete {
+        @apply text-destructive;
     }
 
     .home-empty-state {
@@ -245,6 +269,38 @@
 
     .auth-brand-block {
         @apply mt-2 items-center;
+    }
+
+    .onboarding-content {
+        @apply justify-center;
+    }
+
+    .onboarding-hero {
+        @apply mt-6 items-center rounded-[32px] bg-primary px-6 py-10;
+    }
+
+    .onboarding-badge {
+        @apply mb-5 size-18 items-center justify-center rounded-full bg-accent;
+    }
+
+    .onboarding-badge-text {
+        @apply text-2xl font-sans-extrabold text-primary;
+    }
+
+    .onboarding-title {
+        @apply max-w-[280px] text-center text-4xl font-sans-extrabold text-background;
+    }
+
+    .onboarding-copy {
+        @apply mt-4 max-w-[300px] text-center text-base font-sans-medium text-background/80;
+    }
+
+    .onboarding-points {
+        @apply gap-3 rounded-2xl bg-background p-4;
+    }
+
+    .onboarding-point {
+        @apply text-sm font-sans-medium text-primary;
     }
 
     .auth-logo-wrap {
@@ -379,6 +435,10 @@
         @apply gap-5 p-5;
     }
 
+    .modal-toggle-row {
+        @apply flex-row items-center gap-4;
+    }
+
     .picker-row {
         @apply flex-row gap-3;
     }
@@ -391,12 +451,20 @@
         @apply border-accent bg-accent/10;
     }
 
+    .picker-option-disabled {
+        @apply opacity-45;
+    }
+
     .picker-option-text {
         @apply text-sm font-sans-semibold text-muted-foreground;
     }
 
     .picker-option-text-active {
         @apply text-accent;
+    }
+
+    .picker-option-text-disabled {
+        @apply text-muted-foreground;
     }
 
     .category-scroll {

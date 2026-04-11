@@ -1,79 +1,93 @@
-import { Text, View, Pressable, Image } from 'react-native'
-import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
-import { styled } from "nativewind";
-import { useClerk, useUser } from '@clerk/expo';
-import images from '@/constants/images';
+import { Image, Pressable, Text, TextInput, View } from 'react-native';
+import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
+import { styled } from 'nativewind';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
+import images from '@/constants/images';
+import { useAppStore } from '@/lib/appStore';
+
 const SafeAreaView = styled(RNSafeAreaView);
 
 const Settings = () => {
-    const { signOut } = useClerk();
-    const { user } = useUser();
-    const posthog = usePostHog();
+  const router = useRouter();
+  const posthog = usePostHog();
+  const profileName = useAppStore((state) => state.profileName);
+  const setProfileName = useAppStore((state) => state.setProfileName);
+  const resetOnboarding = useAppStore((state) => state.resetOnboarding);
+  const [draftName, setDraftName] = useState(profileName);
 
-    const handleSignOut = async () => {
-        posthog.capture('user_signed_out');
-        try {
-            await signOut();
-            // Only reset analytics after successful sign-out
-            posthog.reset();
-        } catch (error) {
-            console.error('Sign-out failed:', error);
-            // Don't reset analytics if sign-out failed
-        }
-    };
+  useEffect(() => {
+    setDraftName(profileName);
+  }, [profileName]);
 
-    const displayName = user?.firstName || user?.fullName || user?.emailAddresses[0]?.emailAddress || 'User';
-    const email = user?.emailAddresses[0]?.emailAddress;
+  const handleSaveName = () => {
+    const nextName = draftName.trim() || 'You';
+    setProfileName(nextName);
+    posthog.capture('profile_name_updated', {
+      profile_name: nextName,
+    });
+  };
 
-    return (
-        <SafeAreaView className="flex-1 bg-background p-5">
-            <Text className="text-3xl font-sans-bold text-primary mb-6">Settings</Text>
+  const handleRestartOnboarding = () => {
+    resetOnboarding();
+    posthog.capture('onboarding_restarted');
+    router.replace('/onboarding');
+  };
 
-            {/* User Profile Section */}
-            <View className="auth-card mb-5">
-                <View className="flex-row items-center gap-4 mb-4">
-                    <Image
-                        source={user?.imageUrl ? { uri: user.imageUrl } : images.avatar}
-                        className="size-16 rounded-full"
-                    />
-                    <View className="flex-1">
-                        <Text className="text-lg font-sans-bold text-primary">{displayName}</Text>
-                        {email && (
-                            <Text className="text-sm font-sans-medium text-muted-foreground">{email}</Text>
-                        )}
-                    </View>
-                </View>
-            </View>
+  return (
+    <SafeAreaView className="flex-1 bg-background p-5">
+      <Text className="text-3xl font-sans-bold text-primary mb-6">Preferences</Text>
 
-            {/* Account Section */}
-            <View className="auth-card mb-5">
-                <Text className="text-base font-sans-semibold text-primary mb-3">Account</Text>
-                <View className="gap-2">
-                    <View className="flex-row justify-between items-center py-2">
-                        <Text className="text-sm font-sans-medium text-muted-foreground">Account ID</Text>
-                        <Text className="text-sm font-sans-medium text-primary" numberOfLines={1} ellipsizeMode="tail">
-                            {user?.id?.substring(0, 20)}...
-                        </Text>
-                    </View>
-                    <View className="flex-row justify-between items-center py-2">
-                        <Text className="text-sm font-sans-medium text-muted-foreground">Joined</Text>
-                        <Text className="text-sm font-sans-medium text-primary">
-                            {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
-                        </Text>
-                    </View>
-                </View>
-            </View>
+      <View className="auth-card mb-5">
+        <View className="flex-row items-center gap-4 mb-4">
+          <Image source={images.avatar} className="size-16 rounded-full" />
+          <View className="flex-1">
+            <Text className="text-lg font-sans-bold text-primary">{profileName}</Text>
+            <Text className="text-sm font-sans-medium text-muted-foreground">
+              Local profile for this device
+            </Text>
+          </View>
+        </View>
 
-            {/* Sign Out Button */}
-            <Pressable
-                className="auth-button bg-destructive"
-                onPress={handleSignOut}
-            >
-                <Text className="auth-button-text text-white">Sign Out</Text>
-            </Pressable>
-        </SafeAreaView>
-    )
-}
+        <View className="auth-form">
+          <View className="auth-field">
+            <Text className="auth-label">Display name</Text>
+            <TextInput
+              className="auth-input"
+              value={draftName}
+              onChangeText={setDraftName}
+              placeholder="Your name"
+              placeholderTextColor="rgba(0, 0, 0, 0.4)"
+            />
+          </View>
 
-export default Settings
+          <Pressable className="auth-button" onPress={handleSaveName}>
+            <Text className="auth-button-text">Save Name</Text>
+          </Pressable>
+        </View>
+      </View>
+
+      <View className="auth-card mb-5">
+        <Text className="text-base font-sans-semibold text-primary mb-3">About this MVP</Text>
+        <View className="gap-2">
+          <Text className="text-sm font-sans-medium text-muted-foreground">
+            Your subscriptions now stay on this device after reloads.
+          </Text>
+          <Text className="text-sm font-sans-medium text-muted-foreground">
+            The home avatar now opens this preferences screen instead of an auth profile.
+          </Text>
+          <Text className="text-sm font-sans-medium text-muted-foreground">
+            Local reminder notifications now use the subscription settings you choose.
+          </Text>
+        </View>
+      </View>
+
+      <Pressable className="auth-button bg-primary mb-3" onPress={handleRestartOnboarding}>
+        <Text className="auth-button-text text-background">Restart Onboarding</Text>
+      </Pressable>
+    </SafeAreaView>
+  );
+};
+
+export default Settings;
