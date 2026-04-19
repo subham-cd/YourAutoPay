@@ -16,8 +16,9 @@ import { posthog } from '@/src/config/posthog';
 import {
   getNotificationSupportState,
 } from '@/lib/notificationService';
-import { resolveSubscriptionIcon } from '@/lib/subscriptionIconResolver';
+import { resolveSubscriptionColor, resolveSubscriptionIcon } from '@/lib/subscriptionIconResolver';
 import { toDateInputValue, toPeriodInputValue, toTimeInputValue } from '@/lib/utils';
+import { CATEGORIES, CATEGORY_COLORS } from '@/constants/data';
 
 interface CreateSubscriptionModalProps {
   visible: boolean;
@@ -25,24 +26,6 @@ interface CreateSubscriptionModalProps {
   onSubmit: (subscription: Subscription) => void;
   initialValues?: Subscription | null;
 }
-
-const CATEGORIES: SubscriptionFormValues['category'][] = [
-  'Entertainment',
-  'AI Tools',
-  'Developer Tools',
-  'Design',
-  'Productivity',
-  'Other',
-];
-
-const CATEGORY_COLORS: Record<SubscriptionFormValues['category'], string> = {
-  Entertainment: '#ff6b6b',
-  'AI Tools': '#b8d4e3',
-  'Developer Tools': '#e8def8',
-  Design: '#f5c542',
-  Productivity: '#95e1d3',
-  Other: '#d4d4d4',
-};
 
 const REMINDER_OPTIONS = [1, 3, 7] as const;
 
@@ -243,7 +226,7 @@ const CreateSubscriptionModal = ({
 
     const nextSubscription: Subscription = {
       id: initialValues?.id ?? `sub-${Date.now()}`,
-      icon: initialValues?.icon ?? resolveSubscriptionIcon(name.trim()),
+      icon: resolveSubscriptionIcon(name.trim()),
       name: name.trim(),
       plan: initialValues?.plan,
       category,
@@ -254,7 +237,7 @@ const CreateSubscriptionModal = ({
       currency: initialValues?.currency ?? 'INR',
       billing,
       renewalDate: parsedRenewalDateTime.toISOString(),
-      color: CATEGORY_COLORS[category],
+      color: resolveSubscriptionColor(name.trim(), category),
       notificationsEnabled,
       remindBeforeDays,
       notificationId: initialValues?.notificationId,
@@ -267,10 +250,10 @@ const CreateSubscriptionModal = ({
       subscription_name: nextSubscription.name,
       subscription_price: nextSubscription.price,
       subscription_billing: nextSubscription.billing,
-      subscription_category: nextSubscription.category,
-      renewal_date: nextSubscription.renewalDate,
-      notifications_enabled: nextSubscription.notificationsEnabled,
-      remind_before_days: nextSubscription.remindBeforeDays,
+      subscription_category: nextSubscription.category ?? 'Other',
+      renewal_date: nextSubscription.renewalDate ?? '',
+      notifications_enabled: nextSubscription.notificationsEnabled ?? false,
+      remind_before_days: nextSubscription.remindBeforeDays ?? 0,
     });
 
     resetForm();

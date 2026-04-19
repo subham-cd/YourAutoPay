@@ -1,5 +1,23 @@
 import { icons } from "./icons";
 
+export const CATEGORIES: SubscriptionFormValues['category'][] = [
+    'Entertainment',
+    'AI Tools',
+    'Developer Tools',
+    'Design',
+    'Productivity',
+    'Other',
+];
+
+export const CATEGORY_COLORS: Record<SubscriptionFormValues['category'], string> = {
+    Entertainment: '#ff6b6b',
+    'AI Tools': '#b8d4e3',
+    'Developer Tools': '#e8def8',
+    Design: '#f5c542',
+    Productivity: '#95e1d3',
+    Other: '#d4d4d4',
+};
+
 export const tabs: AppTab[] = [
     { name: "index", title: "Home", icon: icons.home },
     { name: "subscriptions", title: "Subscriptions", icon: icons.wallet },
@@ -24,6 +42,7 @@ export const UPCOMING_SUBSCRIPTIONS: UpcomingSubscription[] = [
         price: 5.99,
         currency: "INR",
         daysLeft: 2,
+        timeLeftLabel: "2 days left",
     },
     {
         id: "notion",
@@ -32,6 +51,7 @@ export const UPCOMING_SUBSCRIPTIONS: UpcomingSubscription[] = [
         price: 12.0,
         currency: "INR",
         daysLeft: 4,
+        timeLeftLabel: "4 days left",
     },
     {
         id: "figma",
@@ -40,6 +60,7 @@ export const UPCOMING_SUBSCRIPTIONS: UpcomingSubscription[] = [
         price: 15.0,
         currency: "INR",
         daysLeft: 6,
+        timeLeftLabel: "6 days left",
     },
 ];
 
